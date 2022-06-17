@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "Flutter (SM N950F)",
+            "program": "lib/main.dart",
+            "deviceId": "ce081718a3cde51e047e",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}
