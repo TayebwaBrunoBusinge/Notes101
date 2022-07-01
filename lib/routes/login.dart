@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               child: const Text(
-                "Create and manage your notes.",
+                "Welcome to Notes101!",
                 style: TextStyle(
                     fontFamily: "Montserrat",
                     fontSize: 40,

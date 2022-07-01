@@ -7,7 +7,6 @@ import 'routes/login.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   runApp(const Notes101());
 }
 
