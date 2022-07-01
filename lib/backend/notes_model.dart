@@ -13,9 +13,9 @@ class Note {
 
   factory Note.fromJson(Map<String, dynamic> json) {
     return Note(
-      title: json['title'] as String,
-      description: json['description'] as String,
-      dateCreated: json['dateCreated'] as String,
+      title: json['title'].toString(),
+      description: json['description'].toString(),
+      dateCreated: json['dateCreated'].toString(),
     );
   }
 

@@ -35,7 +35,10 @@ class _HomepageState extends State<Homepage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: ((context) => AddNote())));
+              .push(MaterialPageRoute(builder: ((context) => AddNote())))
+              .then((value) => setState(() {
+                    loadedNotes = loadNotes();
+                  }));
         },
         child: const Icon(Icons.add),
       ),
@@ -51,7 +54,8 @@ class _HomepageState extends State<Homepage> {
             }
             if (snapshot.hasError) {
               var snapshotE = snapshot.error;
-              print('Snapshot error $snapshotE ');
+              print('Snapshot error: $snapshotE ');
+              print('$snapshot');
               return MaterialBanner(
                 forceActionsBelow: true,
                 content: const Text(
@@ -84,17 +88,43 @@ class _HomepageState extends State<Homepage> {
 
   Widget renderNotesList(List<Note> notesList) {
     print("getting list of length " + notesList.length.toString());
-    print('title is ' + notesList[0].title.toString());
 
-    return ListView.builder(
-      itemCount: notesList.length,
-      itemBuilder: ((context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: customListTile(index),
-        );
-      }),
-    );
+    if (notesList.isNotEmpty) {
+      print('trying to build List View builder.');
+      return ListView.builder(
+        itemCount: notesList.length,
+        itemBuilder: ((context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: customListTile(index),
+          );
+        }),
+      );
+    }
+
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        Text(
+          'No notes stored yet',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+            fontFamily: "Montserrat",
+          ),
+        ),
+        Text(
+          'Click (+) button to add a new Note.',
+          style: TextStyle(
+            fontStyle: FontStyle.italic,
+            fontSize: 16,
+            color: Colors.white,
+            fontFamily: "Montserrat",
+          ),
+        ),
+      ],
+    ));
   }
 
   Widget customListTile(int index) {
