@@ -11,22 +11,36 @@ class NoteDao {
       .collection('notes');
 
   void saveNote(Note note) async {
-    await usersNotesCollection.add(note.toJson());
+    //Changed saveNote.
+    await usersNotesCollection.add(note.toJson()).then((value) async {
+      await usersNotesCollection
+          .doc(value.id)
+          .set({'id': value.id}, SetOptions(merge: true));
+    });
   }
 
   void updateNote(Note note) async {
     try {
+      print('trying to update note.');
+      print('Note id is:' + note.id.toString());
       await usersNotesCollection
-          .where('title' == note.title.toString())
+          .where('noteId' == note.id.toString())
           .get()
           .then((value) {
         for (var element in value.docs) {
-          usersNotesCollection.doc(element.reference.id).set(note.toJson());
+          print('id is ' + element.reference.id);
+          usersNotesCollection
+              .doc(element.reference.id)
+              .set(note.toJson(), SetOptions(merge: true));
         }
       });
     } on PlatformException catch (e) {
       print('Error while saving note.' + e.toString());
     }
+  }
+
+  void deleteNote(Note note) async {
+    await usersNotesCollection.doc(note.id).delete();
   }
 
   Future<List<Note>> getNotesList() async {

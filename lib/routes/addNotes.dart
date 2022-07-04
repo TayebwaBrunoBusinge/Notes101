@@ -91,6 +91,34 @@ class _AddNoteState extends State<AddNote> {
                           borderRadius: BorderRadius.circular(20),
                         )),
                         backgroundColor:
+                            MaterialStateProperty.all(Colors.redAccent),
+                        fixedSize: MaterialStateProperty.all(Size.fromWidth(
+                            (MediaQuery.of(context).size.width) / 3)),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Delete Note',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Montserrat",
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        noteAccess.saveNote(note);
+                        setState(() {
+                          Navigator.of(context).pop();
+                        });
+                        /*Save to firebase and go back to view saved notes.*/
+                      },
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        )),
+                        backgroundColor:
                             MaterialStateProperty.all(Colors.blueAccent),
                         fixedSize: MaterialStateProperty.all(Size.fromWidth(
                             (MediaQuery.of(context).size.width) / 3)),

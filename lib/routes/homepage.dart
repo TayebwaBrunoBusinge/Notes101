@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:notes101/backend/note_dao.dart';
 import 'package:notes101/backend/notes_model.dart';
 import 'package:notes101/routes/addNotes.dart';
@@ -131,14 +130,17 @@ class _HomepageState extends State<Homepage> {
     return ListTile(
       enabled: true,
       onTap: () {
-        getNoteProperties(notesList[index].title.toString(),
-            notesList[index].description.toString());
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) {
-            return ViewNote();
+            return ViewNote(note: notesList[index]);
           },
-          maintainState: false,
-        ));
+          //maintainState: true,
+        )).then((value) {
+          //added two lines.
+          setState(() {
+            loadedNotes = loadNotes();
+          });
+        });
       },
       tileColor: Colors.grey[800],
       style: ListTileStyle.drawer,

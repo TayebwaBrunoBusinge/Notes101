@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:notes101/routes/homepage.dart';
 import '../backend/note_dao.dart';
 import '../backend/notes_model.dart';
+import '../routes/addNotes.dart';
 
 class ViewNote extends StatefulWidget {
-  ViewNote({Key? key}) : super(key: key);
+  const ViewNote({Key? key, required this.note})
+      : super(key: key); //Changed here.
+
+  final Note note;
 
   @override
-  State<ViewNote> createState() => _ViewNoteState();
+  State<ViewNote> createState() {
+    //Changed here.
+
+    return _ViewNoteState(note: note);
+  }
 }
 
-late String _title, _description;
+// note = Note();
 
 class _ViewNoteState extends State<ViewNote> {
   // final TextEditingController _titleController = TextEditingController();
   // final TextEditingController _descriptionController = TextEditingController();
-  Note note = Note();
+
+  _ViewNoteState({required this.note}); //changed here.
+  final Note note;
+
   NoteDao noteAccess = NoteDao();
   DateTime timeNow = DateTime.now();
 
@@ -40,7 +50,7 @@ class _ViewNoteState extends State<ViewNote> {
             child: Column(
               children: [
                 TextFormField(
-                  initialValue: _title,
+                  initialValue: note.title,
                   style: const TextStyle(color: Colors.white),
                   onChanged: ((value) {
                     note.title = value;
@@ -60,7 +70,7 @@ class _ViewNoteState extends State<ViewNote> {
                 ),
                 const Padding(padding: EdgeInsets.only(top: 20.0)),
                 TextFormField(
-                  initialValue: _description,
+                  initialValue: note.description,
                   style: const TextStyle(color: Colors.white),
                   maxLines: 19,
                   minLines: 19,
@@ -81,8 +91,35 @@ class _ViewNoteState extends State<ViewNote> {
                 ),
                 const Padding(padding: EdgeInsets.only(top: 20.0)),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        noteAccess.deleteNote(note); //changed here.
+                        setState(() {
+                          Navigator.of(context).pop();
+                        });
+                      },
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        )),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.redAccent),
+                        fixedSize: MaterialStateProperty.all(Size.fromWidth(
+                            (MediaQuery.of(context).size.width) / 3)),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Delete Note',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Montserrat",
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
                     ElevatedButton(
                       onPressed: () {
                         noteAccess.updateNote(note);
@@ -101,7 +138,7 @@ class _ViewNoteState extends State<ViewNote> {
                       ),
                       child: const Center(
                         child: Text(
-                          'Save Note',
+                          'Update Note',
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: "Montserrat",
@@ -121,7 +158,12 @@ class _ViewNoteState extends State<ViewNote> {
   }
 }
 
-void getNoteProperties(String title, String description) {
-  _title = title;
-  _description = description;
-}
+// Note rebuildNote(String title, String description) {
+//   note = Note(
+//     dateCreated: DateTime.now().toString(),
+//     title: title,
+//     description: description,
+//   );
+
+//   return note;
+// }
